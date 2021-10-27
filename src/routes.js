@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
-router.get("/", (req, res) => res.json({ message: "Hello World!" }));
+const accountController = require("./controllers/accountController");
+//Create a new route for creating a new account
+router.post("/account", accountController.createAccount);
 
 module.exports = router;
