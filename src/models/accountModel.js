@@ -19,7 +19,7 @@ class Account {
     this.errors = [];
   }
   async create() {
-    const alreadyExists = await this.checkAccount();
+    const alreadyExists = await this.checkAccountByCPF(this.body.cpf);
     if (alreadyExists) {
       this.errors.push("Account already exists");
       return this.errors;
@@ -35,8 +35,8 @@ class Account {
     }
     await accountModel.create(this.body);
   }
-  async checkAccount() {
-    const account = await accountModel.findOne({ cpf: this.body.cpf });
+  async checkAccountByCPF(cpf) {
+    const account = await accountModel.findOne({ cpf: cpf });
     if (account) {
       return account;
     }

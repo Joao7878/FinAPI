@@ -8,7 +8,18 @@ exports.createAccount = async (req, res) => {
       message: account.errors,
     });
   }
-  res.status(201).json({
+  return res.status(201).json({
     status: "success",
   });
+};
+exports.getStatement = async (req, res) => {
+  const account = new Account(req.body);
+  const verify = await account.checkAccountByCPF(req.params.cpf);
+  if (!verify) {
+    return res.status(400).json({
+      status: "error",
+      message: "Account not found",
+    });
+  }
+  return res.status(200).json(verify.statement);
 };
