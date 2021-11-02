@@ -62,7 +62,7 @@ class Account {
       this.errors.push("Account not found");
       return this.errors;
     }
-    account.statement.list.push("Deposit: " + value);
+    account.statement.list.push(Date() + " Deposit: " + value);
     account.statement.balance += value;
     const update = await accountModel.findByIdAndUpdate(account._id, account);
     return update;
@@ -77,7 +77,7 @@ class Account {
       this.errors.push("Insufficient funds");
       return this.errors;
     }
-    account.statement.list.push("Withdraw: " + value);
+    account.statement.list.push(Date() + " Withdraw: " + value);
     account.statement.balance -= value;
     const update = await accountModel.findByIdAndUpdate(account._id, account);
     return update;
