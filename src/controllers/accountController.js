@@ -60,3 +60,16 @@ exports.getBalance = async (req, res) => {
   }
   return res.status(200).json(verify);
 };
+exports.delete = async (req, res) => {
+  const account = new Account(req.body);
+  await account.delete(req.params.id);
+  if (account.errors.length > 0) {
+    return res.status(400).json({
+      status: "error",
+      message: account.errors,
+    });
+  }
+  return res.status(200).json({
+    status: "success",
+  });
+};

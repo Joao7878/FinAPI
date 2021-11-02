@@ -89,5 +89,23 @@ class Account {
     }
     return false;
   }
+  async checkAccountById(id) {
+    if (typeof id !== "string") {
+      return false;
+    }
+    const account = await accountModel.findById(id);
+    if (account) {
+      return account;
+    }
+    return false;
+  }
+  async delete(id) {
+    const account = await this.checkAccountById(id);
+    if (!account) {
+      this.errors.push("Account not found");
+      return this.errors;
+    }
+    await accountModel.findByIdAndDelete(id);
+  }
 }
 module.exports = Account;
