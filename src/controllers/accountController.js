@@ -73,3 +73,16 @@ exports.delete = async (req, res) => {
     status: "success",
   });
 };
+exports.transfer = async (req, res) => {
+  const account = new Account(req.body);
+  await account.transfer(req.params.cpf, req.body.value, req.body.cpf);
+  if (account.errors.length > 0) {
+    return res.status(400).json({
+      status: "error",
+      message: account.errors,
+    });
+  }
+  return res.status(200).json({
+    status: "success",
+  });
+};

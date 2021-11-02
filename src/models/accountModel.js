@@ -107,5 +107,31 @@ class Account {
     }
     await accountModel.findByIdAndDelete(id);
   }
+  async transfer(cpf, value, cpfTo) {
+    const account = await this.checkAccountByCPF(cpf);
+    if (!account) {
+      this.errors.push("Account not found");
+      return this.errors;
+    }
+    if (account.statement.balance < value) {
+      this.errors.push("Insufficient funds");
+      return this.errors;
+    }
+    const accountTo = await this.checkAccountByCPF(cpfTo);
+    if (!accountTo) {
+      this.errors.push("Account not found");
+      return this.errors;
+    }
+    account.statement.list.push(Date() + " Transfered: " + value);
+    account.statement.balance -= value;
+    accountTo.statement.list.push(Date() + " Received: " + value);
+    accountTo.statement.balance += value;
+    const update = await accountModel.findByIdAndUpdate(account._id, account);
+    const updateTo = await accountModel.findByIdAndUpdate(
+      accountTo._id,
+      accountTo
+    );
+    return update;
+  }
 }
 module.exports = Account;
